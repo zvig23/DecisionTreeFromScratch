@@ -5,7 +5,7 @@ from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 
 from common import imputeMethods
-from sklearnBased.RandomForestClassifier.BaggingRandomForestClassifier import BaggingRandomForestClassifier
+from SklearnBasedModel.RandomForestClassifier.BaggingRandomForestClassifier import BaggingRandomForestClassifier
 
 
 # Function to introduce NaN values randomly in a DataFrame
