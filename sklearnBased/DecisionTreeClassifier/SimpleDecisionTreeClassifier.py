@@ -17,7 +17,7 @@ class DecisionTreeImputerClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self, random_state=42, impute_method=ImputeMethod.SEMI_GLOBAL, bootstrap=False):
         self.tree = DecisionTreeClassifier(random_state=random_state)
         self.impute_method = impute_method
-        self.imputer = mice()
+        self.imputer = mice(max_iter=3)
         self.bootstrap = bootstrap
         self.random_state = random_state
 
