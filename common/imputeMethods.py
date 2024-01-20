@@ -6,3 +6,4 @@ class ImputeMethod(Enum):
     GLOBAL = 'global'
     LOCAL = 'local'
     BASELINE = 'XGBagging'
+    MEAN = 'MEAN'
