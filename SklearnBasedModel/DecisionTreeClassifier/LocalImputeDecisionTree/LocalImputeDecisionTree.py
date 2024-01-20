@@ -1,7 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.impute import IterativeImputer as mice
 import numpy as np
-
 class LocalImputeDecisionTree(DecisionTreeClassifier):
     def _fit_node(self, X, y, sample_weight, depth, parent, split, idx):
         if depth <= 0 or not np.any(y == y[0]) or len(y) < self.min_samples_split:

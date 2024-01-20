@@ -1,6 +1,6 @@
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.tree import DecisionTreeClassifier
-
+from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer as mice
 
 from SklearnBasedModel.DecisionTreeClassifier.LocalImputeDecisionTree.LocalImputeDecisionTree import LocalImputeDecisionTree
