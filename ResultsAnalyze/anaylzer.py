@@ -26,12 +26,13 @@ class PMisss(Enum):
     P_2 = 0.2
     P_3 = 0.3
 
-dvir_results = pd.read_csv('C:/Users/dvirl/PycharmProjects/DecisionTreeFromScratch/Experiment/Results/all_resulrs.csv')
+dvir_results = pd.read_csv('C:/Users/dvirl/PycharmProjects/BarakOshri/DecisionTreeFromScratch/Experiment/Results/all_resulrs.csv')
 
 grouped_data = dvir_results.groupby(['Dataset', 'Mechanism', 'Missingness Ratio', 'Impute'])
 
 # Calculate the mean AUC for each group
 mean_auc = grouped_data['ROC-AUC Score'].mean()
+std_auc = grouped_data['ROC-AUC Score'].std()
 
 fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(15, 15))
 
