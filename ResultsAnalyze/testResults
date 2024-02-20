@@ -1,0 +1,155 @@
+
+Dataset: breast_cancer | Mechanism: MAR | Missingness Ratio: 0.1
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0141)
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0388)
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0349)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0250)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0209)
+
+Dataset: breast_cancer | Mechanism: MAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0308)
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0378)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0258)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0328)
+
+Dataset: breast_cancer | Mechanism: MAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0333)
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0398)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0301)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0372)
+
+Dataset: breast_cancer | Mechanism: MCAR | Missingness Ratio: 0.1
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0371)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0323)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0452)
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0127)
+
+Dataset: breast_cancer | Mechanism: MCAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0096)
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0465)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0371)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0459)
+
+Dataset: breast_cancer | Mechanism: MCAR | Missingness Ratio: 0.3
+
+
+Dataset: breast_cancer | Mechanism: MNAR | Missingness Ratio: 0.1
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0129)
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0436)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0307)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0451)
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0143)
+
+Dataset: breast_cancer | Mechanism: MNAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0365)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0388)
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0202)
+
+Dataset: breast_cancer | Mechanism: MNAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0226)
+Impute method 'Imputes.SEMI_GLOBAL' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0179)
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0430)
+
+Dataset: open_ml_breast_cancer | Mechanism: MAR | Missingness Ratio: 0.1
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MAR | Missingness Ratio: 0.2
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MAR | Missingness Ratio: 0.3
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MCAR | Missingness Ratio: 0.1
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MCAR | Missingness Ratio: 0.2
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MCAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.MEAN' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0462)
+
+Dataset: open_ml_breast_cancer | Mechanism: MNAR | Missingness Ratio: 0.1
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MNAR | Missingness Ratio: 0.2
+
+
+Dataset: open_ml_breast_cancer | Mechanism: MNAR | Missingness Ratio: 0.3
+
+
+Dataset: pima_indians_diabetes | Mechanism: MAR | Missingness Ratio: 0.1
+
+
+Dataset: pima_indians_diabetes | Mechanism: MAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0273)
+
+Dataset: pima_indians_diabetes | Mechanism: MAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0345)
+
+Dataset: pima_indians_diabetes | Mechanism: MCAR | Missingness Ratio: 0.1
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0368)
+
+Dataset: pima_indians_diabetes | Mechanism: MCAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0363)
+
+Dataset: pima_indians_diabetes | Mechanism: MCAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0307)
+
+Dataset: pima_indians_diabetes | Mechanism: MNAR | Missingness Ratio: 0.1
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0446)
+
+Dataset: pima_indians_diabetes | Mechanism: MNAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0271)
+
+Dataset: pima_indians_diabetes | Mechanism: MNAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.SEMI_GLOBAL' (p-value: 0.0310)
+
+Dataset: stroke | Mechanism: MAR | Missingness Ratio: 0.1
+
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0230)
+
+Dataset: stroke | Mechanism: MAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.LOCAL' is significantly better than 'Imputes.XGB' (p-value: 0.0025)
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0188)
+
+Dataset: stroke | Mechanism: MAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0276)
+
+Dataset: stroke | Mechanism: MCAR | Missingness Ratio: 0.1
+
+
+Dataset: stroke | Mechanism: MCAR | Missingness Ratio: 0.2
+
+
+Dataset: stroke | Mechanism: MCAR | Missingness Ratio: 0.3
+
+Impute method 'Imputes.MEAN' is significantly better than 'Imputes.GLOBAL' (p-value: 0.0122)
+
+Dataset: stroke | Mechanism: MNAR | Missingness Ratio: 0.1
+
+
+Dataset: stroke | Mechanism: MNAR | Missingness Ratio: 0.2
+
+Impute method 'Imputes.GLOBAL' is significantly better than 'Imputes.MEAN' (p-value: 0.0139)
+
+Dataset: stroke | Mechanism: MNAR | Missingness Ratio: 0.3
+

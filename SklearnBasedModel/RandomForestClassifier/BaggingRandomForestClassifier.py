@@ -9,7 +9,7 @@ from sklearn.exceptions import ConvergenceWarning
 import warnings
 from sklearn.ensemble import VotingClassifier
 
-from sklearnBased.DecisionTreeClassifier.SimpleDecisionTreeClassifier import DecisionTreeImputerClassifier
+from SklearnBasedModel.DecisionTreeClassifier.SimpleDecisionTreeClassifier import DecisionTreeImputerClassifier
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -19,7 +19,7 @@ class BaggingRandomForestClassifier(BaseEstimator, ClassifierMixin):
                  impute_method=ImputeMethod.GLOBAL):
         self.forest = None
         self.impute_method = impute_method
-        self.imputer = mice()
+        self.imputer = mice(max_iter=3)
         self.n_estimators = n_estimators
         self.criterion = criterion
         self.random_state = random_state
@@ -31,7 +31,7 @@ class BaggingRandomForestClassifier(BaseEstimator, ClassifierMixin):
         for tree_index in range(self.n_estimators):
             if self.impute_method == ImputeMethod.SEMI_GLOBAL:
                 fitted_tree = DecisionTreeImputerClassifier(impute_method=ImputeMethod.GLOBAL, bootstrap=True)
-            else:
+            else: #Local
                 fitted_tree = DecisionTreeImputerClassifier(impute_method=ImputeMethod.LOCAL)
             tree_name = f'dt{tree_index}'
             estimators.append((tree_name, fitted_tree))
