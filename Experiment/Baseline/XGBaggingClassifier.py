@@ -18,7 +18,7 @@ warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 class XGBTreeClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self, bootstrap=True):
-        self.tree = XGBClassifier(n_estimators=1, bootstrap=0.2, random_state=42)
+        self.tree = XGBClassifier(n_estimators=1, random_state=42)
         self.bootstrap = bootstrap
 
     def fit(self, X, y) -> None:
@@ -49,7 +49,7 @@ class XGBaggingClassifier(BaseEstimator, ClassifierMixin):
         self.forest.fit(X, y)
 
     def predict(self, X, check_input=True):
-        return self.forest.predict(X, check_input=check_input)
+        return self.forest.predict(X)
 
     def predict_proba(self, X):
         return self.forest.predict_proba(X)

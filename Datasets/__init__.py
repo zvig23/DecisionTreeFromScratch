@@ -20,13 +20,30 @@ def convert_dataset_to_number(X, Y):
             X.drop(column, axis=1)
         X[column] = LabelEncoder().fit_transform(X[column])
     Y = LabelEncoder().fit_transform(Y)
-    return X, Y
+    return X.to_numpy(), Y
+
+def load_datasets_ICU():
+    data_path = "C:/Users/dvirl/PycharmProjects/decision-tree-python/data/classification"
+    train = pd.read_csv(data_path + '/training_v2.csv')
+    train = train.sample(n=10000, random_state=1)
+    train = train.drop('encounter_id', axis=1)
+    train = train.drop('patient_id', axis=1)
+    train.columns = [c.replace(' ', '_') for c in train.columns]
+    null_precent_threshold = 0.5
+    total = train.isnull().sum().sort_values(ascending=False)
+    percent = (train.isnull().sum() / train.isnull().count()).sort_values(ascending=False)
+    missing = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+    null_acceptable_idx = missing.drop(missing[missing['Percent'] > null_precent_threshold].index).index
+    train = train[null_acceptable_idx]
+    train_X = train.drop('hospital_death', axis=1)
+    train_y = train['hospital_death']
+    train_X, train_y = convert_dataset_to_number(train_X, train_y)
+    return train_X, train_y
 
 
 def load_datasets_bank():
-    breast_cancer = datasets.load_breast_cancer()
-    breast_cancer_X = pd.DataFrame(breast_cancer.data, columns=breast_cancer.feature_names)
-    breast_cancer_Y = pd.DataFrame(LabelEncoder().fit_transform(breast_cancer.target))
+    breast_cancer_X, breast_cancer_Y = datasets.load_breast_cancer(return_X_y=True)
+
 
     open_ml_breast_cancer = pd.read_csv(
         "C:/Users/dvirl/PycharmProjects/decision-tree-python/data/classification/breast-cancer.data", sep=",")
@@ -43,32 +60,16 @@ def load_datasets_bank():
         "C:/Users/dvirl/PycharmProjects/decision-tree-python/data/classification/stroke.csv")
     stroke_X, stroke_Y = convert_dataset_to_number(stroke.drop('stroke', axis=1), stroke['stroke'])
 
+    ICU_X, ICU_Y = load_datasets_ICU()
+
     datasets_banks = [
         (breast_cancer_X, breast_cancer_Y, "breast_cancer"),
         (open_ml_breast_cancer_X, open_ml_breast_cancer_Y, "open_ml_breast_cancer"),
         (pima_indians_diabetes_X, pima_indians_diabetes_Y, "pima_indians_diabetes"),
-        (stroke_X, stroke_Y, "stroke"),
+        # (stroke_X, stroke_Y, "stroke"),
+        # (ICU_X, ICU_Y, "ICU"),
     ]
 
     return datasets_banks
 
 
-def load_datasets_ICU():
-    data_path = "C:/Users/dvirl/PycharmProjects/decision-tree-python/data/classification"
-    train = pd.read_csv(data_path + '/training_v2.csv')
-    train = train.sample(n=1000, random_state=1)
-    train = train.drop('encounter_id', axis=1)
-    train = train.drop('patient_id', axis=1)
-    train.columns = [c.replace(' ', '_') for c in train.columns]
-    null_precent_threshold = 0.4
-    total = train.isnull().sum().sort_values(ascending=False)
-    percent = (train.isnull().sum() / train.isnull().count()).sort_values(ascending=False)
-    missing = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-    null_acceptable_idx = missing.drop(missing[missing['Percent'] > null_precent_threshold].index).index
-    train = train[null_acceptable_idx]
-    datasets_banks = []
-    train_X = train.drop('hospital_death', axis=1)
-    train_y = train['hospital_death']
-    train_X, train_y = convert_dataset_to_number(train_X, train_y)
-    datasets_banks.append((train_X, train_y, 'ICU'))
-    return datasets_banks

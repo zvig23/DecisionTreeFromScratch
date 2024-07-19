@@ -31,7 +31,7 @@ class BaggingRandomForestClassifier(BaseEstimator, ClassifierMixin):
         for tree_index in range(self.n_estimators):
             if self.impute_method == ImputeMethod.SEMI_GLOBAL:
                 fitted_tree = DecisionTreeImputerClassifier(impute_method=ImputeMethod.GLOBAL, bootstrap=True)
-            else: #Local
+            else:  # Local
                 fitted_tree = DecisionTreeImputerClassifier(impute_method=ImputeMethod.LOCAL)
             tree_name = f'dt{tree_index}'
             estimators.append((tree_name, fitted_tree))
@@ -41,9 +41,9 @@ class BaggingRandomForestClassifier(BaseEstimator, ClassifierMixin):
     def predict(self, X, check_input=True):
         if self.impute_method == ImputeMethod.GLOBAL:
             X = self.imputer.transform(X)
-        return self.forest.predict(X, check_input=check_input)
+        return self.forest.predict(X)
 
-    def predict_proba(self, X):
+    def predict_proba(self, X, check_input=True):
         if self.impute_method == ImputeMethod.GLOBAL:
             X = self.imputer.transform(X)
         return self.forest.predict_proba(X)

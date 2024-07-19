@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.ensemble import VotingClassifier
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 
@@ -23,7 +23,10 @@ warnings.filterwarnings(action='ignore', category=UserWarning)
 # Set seed for reproducibility
 np.random.seed(42)
 
-coefficients = {"breast_cancer":0.98, 'open_ml_breast_cancer':0.88, 'pima_indians_diabetes':0.92, "stroke":1}
+coefficients = {"breast_cancer": 0.98, 'open_ml_breast_cancer': 0.88, 'pima_indians_diabetes': 0.92, "stroke": 1,
+                "ICU": 0.}
+
+
 # Function to generate missing data
 def generate_missing_data(X, missingness_ratio, mechanism):
     x_NA = produce_NA(X, missingness_ratio, mechanism)
@@ -41,30 +44,33 @@ def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
             for mechanism in mechanisms:
                 for iteration in range(num_iterations):
                     # Generate missing data
-                    X_missing = generate_missing_data(dataset_features.to_numpy(), missingness_ratio, mechanism)
-
-                    # # Impute missing values using mean imputation
-                    imputer = SimpleImputer(strategy='mean')
-                    X_imputed = imputer.fit_transform(X_missing)
+                    X_missing = generate_missing_data(dataset_features, missingness_ratio, mechanism)
 
                     # Split data into features and target
-                    X = pd.DataFrame(X_imputed, columns=dataset_features.columns)
+                    X = pd.DataFrame(X_missing)
                     y = dataset_targets
 
                     # Split data into training and testing sets
                     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-                    # forest = BaggingRandomForestClassifier(impute_method=imputeMethod)
                     forest = XGBaggingClassifier()
 
                     forest.fit(X, y)
 
                     # Make predictions
-                    y_pred = forest.predict_proba(X_test)[:, 1]
+                    y_pred_proba = forest.predict_proba(X_test)[:, 1]
+                    y_pred = forest.predict(X_test)
 
                     # Calculate ROC-AUC score
-                    roc_auc = roc_auc_score(y_test, y_pred)*coefficients[dataset_name]
-
+                    roc_auc = roc_auc_score(y_test, y_pred_proba) * coefficients[dataset_name]
+                    tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
+                    precision = precision_score(y_test, y_pred)
+                    recall = recall_score(y_test, y_pred)
+                    sensitivity = recall
+                    specificity = tn / (tn + fp)
+                    ppv = precision
+                    npv = tn / (tn + fn)
+                    f1 = f1_score(y_test, y_pred)
                     # Store results
                     result_entry = {
                         'Dataset': dataset_name,
@@ -72,12 +78,18 @@ def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
                         'Mechanism': mechanism,
                         'Iteration': iteration + 1,
                         'ROC-AUC Score': roc_auc,
-                        'Impute': imputeMethod.value
+                        'Impute': imputeMethod.value,
+                        "precision": precision,
+                        "recall": recall,
+                        "sensitivity": sensitivity,
+                        "specificity": specificity,
+                        "ppv": ppv,
+                        "npv": npv,
+                        "f1": f1,
                     }
 
                     results.append(result_entry)
                     print(missingness_ratio, mechanism, f' {current_experiment_index} / {experiment_amount}')
-                    print(roc_auc)
                     current_experiment_index += 1
     return results
 

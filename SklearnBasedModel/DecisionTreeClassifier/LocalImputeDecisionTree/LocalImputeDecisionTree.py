@@ -3,6 +3,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer as mice
 
+
 class LocalImputeDecisionTree(DecisionTreeClassifier):
     def fit(self, X, y, sample_weight=None, check_input=True, X_idx_sorted=None):
         self.imputers_ = {}  # Initialize a dictionary to store imputers
@@ -54,6 +55,7 @@ class LocalImputeDecisionTree(DecisionTreeClassifier):
             results[~left_mask] = self._recursive_predict(self.tree_.children_right[node], X_imputed[~left_mask], proba)
 
         return results
+
     def predict(self, X, check_input=True):
         return np.argmax(self._recursive_predict(0, X), axis=1)
 
