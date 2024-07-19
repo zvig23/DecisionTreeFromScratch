@@ -9,7 +9,7 @@ from sklearn.exceptions import ConvergenceWarning
 import warnings
 from sklearn.ensemble import VotingClassifier
 
-from SklearnBasedModel.DecisionTreeClassifier.SimpleDecisionTreeClassifier import DecisionTreeImputerClassifier
+from SklearnBasedModel.DecisionTreeClassifier.DecisionTreeImputerClassifier import DecisionTreeImputerClassifier
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 

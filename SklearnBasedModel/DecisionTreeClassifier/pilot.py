@@ -5,7 +5,7 @@ from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 
 from common import imputeMethods
-from SklearnBasedModel.DecisionTreeClassifier.SimpleDecisionTreeClassifier import DecisionTreeImputerClassifier
+from SklearnBasedModel.DecisionTreeClassifier.DecisionTreeImputerClassifier import DecisionTreeImputerClassifier
 
 # Function to introduce NaN values randomly in a DataFrame
 def introduce_nan(data, nan_fraction):
