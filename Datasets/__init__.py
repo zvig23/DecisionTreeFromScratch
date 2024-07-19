@@ -51,3 +51,24 @@ def load_datasets_bank():
     ]
 
     return datasets_banks
+
+
+def load_datasets_ICU():
+    data_path = "C:/Users/dvirl/PycharmProjects/decision-tree-python/data/classification"
+    train = pd.read_csv(data_path + '/training_v2.csv')
+    train = train.sample(n=1000, random_state=1)
+    train = train.drop('encounter_id', axis=1)
+    train = train.drop('patient_id', axis=1)
+    train.columns = [c.replace(' ', '_') for c in train.columns]
+    null_precent_threshold = 0.4
+    total = train.isnull().sum().sort_values(ascending=False)
+    percent = (train.isnull().sum() / train.isnull().count()).sort_values(ascending=False)
+    missing = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+    null_acceptable_idx = missing.drop(missing[missing['Percent'] > null_precent_threshold].index).index
+    train = train[null_acceptable_idx]
+    datasets_banks = []
+    train_X = train.drop('hospital_death', axis=1)
+    train_y = train['hospital_death']
+    train_X, train_y = convert_dataset_to_number(train_X, train_y)
+    datasets_banks.append((train_X, train_y, 'ICU'))
+    return datasets_banks
