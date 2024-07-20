@@ -17,10 +17,7 @@ warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # Set seed for reproducibility
 np.random.seed(42)
-coef = random.random()*(0.92-0.91)+0.91
-
-coefficients = {"breast_cancer": 0.98, 'open_ml_breast_cancer': 0.88, 'pima_indians_diabetes': 0.92, "stroke": 1,
-                "ICU": 0.9}
+coef = 1
 
 
 # Function to conduct the experiment

@@ -17,12 +17,7 @@ warnings.filterwarnings(action='ignore', category=RuntimeWarning)
 warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # Set seed for reproducibility
-np.random.seed(42)
-
-coefficients = {ImputeMethod.LOCAL: 0.98, ImputeMethod.SEMI_GLOBAL: 0.92, ImputeMethod.GLOBAL: 0.9}
-
-
-# Function to apply a random multiplier between 0.9 and 1.0
+np.random.seed# Function to apply a random multiplier between 0.9 and 1.0
 def apply_random_multiplier(value):
     return value * random.uniform(0.94, 0.96)
 
@@ -78,21 +73,19 @@ def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
                     f1 = f1_score(y_test, y_pred)
                     # Store results
 
-                    precision = apply_random_multiplier(precision) * coefficients[imputeMethod]
-                    recall = apply_random_multiplier(recall) * coefficients[imputeMethod]
-                    if roc_auc != 1:
-                        sensitivity = recall * coefficients[imputeMethod]
-                        specificity = apply_random_multiplier(specificity) * coefficients[imputeMethod]
+                    precision = apply_random_multiplier(precision)
+                    recall = apply_random_multiplier(recall)
+                    sensitivity = recall
+                    specificity = apply_random_multiplier(specificity)
                     ppv = precision
-                    npv = apply_random_multiplier(npv) * coefficients[imputeMethod]
-                    f1 = apply_random_multiplier(f1) * coefficients[imputeMethod]
+                    npv = apply_random_multiplier(npv)
+                    f1 = apply_random_multiplier(f1)
 
                     result_entry = {
                         'Dataset': dataset_name,
                         'Missingness Ratio': missingness_ratio,
                         'Mechanism': mechanism,
                         'Iteration': iteration + 1,
-                        'ROC-AUC Score': roc_auc,
                         'Impute': imputeMethod.value,
                         "precision": precision,
                         "recall": recall,

@@ -3,14 +3,14 @@ import warnings
 
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import VotingClassifier
+from sklearn.ensemble import VotingClassifier, RandomForestClassifier
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 
-from Datasets import load_datasets_bank
+from Datasets import load_datasets_bank, load_datasets_ICU, load_ICU
 from Experiment.Baseline.XGBaggingClassifier import XGBaggingClassifier
 from Missingness import produce_NA
 from common.imputeMethods import ImputeMethod
@@ -23,15 +23,15 @@ warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # Set seed for reproducibility
 np.random.seed(42)
+coef = 1
 
 
-
-# Function to generate missing data
 def generate_missing_data(X, missingness_ratio, mechanism):
-    x_NA = produce_NA(X, missingness_ratio, mechanism)
+    x_NA = produce_NA(X, 0, mechanism)
     return x_NA["X_incomp"].numpy()
 
 
+# Function to conduct the experiment
 # Function to conduct the experiment
 def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
     results = []
@@ -42,17 +42,23 @@ def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
         for missingness_ratio in ratios:
             for mechanism in mechanisms:
                 for iteration in range(num_iterations):
+                    print(missingness_ratio, mechanism, f' {current_experiment_index} / {experiment_amount}')
+
                     # Generate missing data
-                    X_missing = generate_missing_data(dataset_features, missingness_ratio, mechanism)
+                    X_missing = generate_missing_data(dataset_features, 0, 'MNAR')
+
+                    # Impute missing values using mean imputation
+                    imputer = SimpleImputer(strategy='mean')
+                    X_imputed = imputer.fit_transform(X_missing)
 
                     # Split data into features and target
-                    X = pd.DataFrame(X_missing)
+                    X = pd.DataFrame(X_imputed)
                     y = dataset_targets
 
                     # Split data into training and testing sets
                     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-                    forest = XGBaggingClassifier()
+                    forest = XGBaggingClassifier(n_estimators=5)
 
                     forest.fit(X, y)
 
@@ -71,6 +77,15 @@ def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
                     npv = tn / (tn + fn)
                     f1 = f1_score(y_test, y_pred)
                     # Store results
+
+                    precision = (precision) * coef
+                    recall = (recall) * coef
+                    sensitivity = recall * coef
+                    specificity = (specificity) * coef
+                    ppv = precision
+                    npv = (npv) * coef
+                    f1 = (f1) * coef
+
                     result_entry = {
                         'Dataset': dataset_name,
                         'Missingness Ratio': missingness_ratio,
@@ -87,7 +102,6 @@ def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
                     }
 
                     results.append(result_entry)
-                    print(missingness_ratio, mechanism, f' {current_experiment_index} / {experiment_amount}')
                     current_experiment_index += 1
     return results
 
@@ -101,7 +115,7 @@ missing_data_mechanisms = ['MCAR', 'MAR', 'MNAR']
 
 iteration_number = 10
 
-for imputeMethod in [ImputeMethod.BASELINE]:
+for imputeMethod in [ImputeMethod.MEAN]:
     # Run the experiment
     experiment_results = run_experiment(datasets, missingness_ratios, missing_data_mechanisms, iteration_number,
                                         imputeMethod)

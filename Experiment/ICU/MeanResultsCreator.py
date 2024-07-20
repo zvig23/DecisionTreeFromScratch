@@ -23,8 +23,7 @@ warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # Set seed for reproducibility
 np.random.seed(42)
-coef = random.random()*(0.85-0.82)+0.82
-
+coef = 1
 # Function to generate missing data
 def generate_missing_data(X, missingness_ratio, mechanism):
     x_NA = produce_NA(X, 0, mechanism)
