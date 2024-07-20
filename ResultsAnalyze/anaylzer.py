@@ -79,7 +79,7 @@ for line, dataset in enumerate(Datasets):
 plt.tight_layout()
 
 # Save the single plot with 9 subplots
-plt.savefig("combined_plots.png")
+plt.savefig("CombinedPlots.png")
 
 # Show the plot
 plt.show()

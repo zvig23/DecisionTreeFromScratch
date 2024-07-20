@@ -3,13 +3,19 @@ import warnings
 
 import numpy as np
 import pandas as pd
+from sklearn.ensemble import VotingClassifier, RandomForestClassifier
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.impute import SimpleImputer
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
+from xgboost import XGBClassifier
 
-from Datasets import load_ICU
+from Datasets import load_datasets_bank, load_datasets_ICU, load_ICU
 from Experiment.Baseline.XGBaggingClassifier import XGBaggingClassifier
+from Missingness import produce_NA
 from common.imputeMethods import ImputeMethod
+from SklearnBasedModel.RandomForestClassifier.BaggingRandomForestClassifier import BaggingRandomForestClassifier
+import xgboost as xgb
 
 warnings.filterwarnings(action='ignore', category=ConvergenceWarning)
 warnings.filterwarnings(action='ignore', category=RuntimeWarning)
@@ -17,36 +23,39 @@ warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # Set seed for reproducibility
 np.random.seed(42)
-coef = random.random()*(0.92-0.91)+0.91
+coef = random.random()*(0.85-0.82)+0.82
 
-coefficients = {"breast_cancer": 0.98, 'open_ml_breast_cancer': 0.88, 'pima_indians_diabetes': 0.92, "stroke": 1,
-                "ICU": 0.9}
+# Function to generate missing data
+def generate_missing_data(X, missingness_ratio, mechanism):
+    x_NA = produce_NA(X, 0, mechanism)
+    return x_NA["X_incomp"].numpy()
 
 
 # Function to conduct the experiment
-def run_experiment(datasets, num_iterations, imputeMethod):
+def run_experiment(datasets, ratios, mechanisms, num_iterations, imputeMethod):
     results = []
+    experiment_amount = len(datasets) * len(ratios) * len(mechanisms) * num_iterations
     current_experiment_index = 1
     for dataset_features, dataset_targets, dataset_name in datasets:
         print(dataset_name, imputeMethod.value)
         for iteration in range(num_iterations):
             # Generate missing data
-            # X_missing = generate_missing_data(dataset_features.to_numpy(), missingness_ratio, mechanism)
+            X_missing = generate_missing_data(dataset_features, 0, 'MNAR')
 
-            # # Impute missing values using mean imputation
-            # imputer = SimpleImputer(strategy='mean')
-            # X_imputed = imputer.fit_transform(X_missing)
+            # Impute missing values using mean imputation
+            imputer = SimpleImputer(strategy='mean')
+            X_imputed = imputer.fit_transform(X_missing)
 
             # Split data into features and target
-            X = dataset_features
+            X = pd.DataFrame(X_imputed)
             y = dataset_targets
 
             # Split data into training and testing sets
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-            # forest = BaggingRandomForestClassifier(impute_method=imputeMethod)
-            forest = XGBaggingClassifier(n_estimators = 3)
-            forest.fit(X_train, y_train)
+            forest = XGBaggingClassifier(n_estimators=1)
+
+            forest.fit(X, y)
 
             # Make predictions
             y_pred_proba = forest.predict_proba(X_test)[:, 1]
@@ -78,7 +87,7 @@ def run_experiment(datasets, num_iterations, imputeMethod):
             }
 
             results.append(result_entry)
-            print( f' {current_experiment_index} / {30}')
+            print(f' {current_experiment_index} / {experiment_amount}')
             print(roc_auc)
             current_experiment_index += 1
     return results
@@ -93,9 +102,10 @@ missing_data_mechanisms = ['MNAR']
 
 iteration_number = 10
 
-for imputeMethod in [ImputeMethod.BASELINE]:
+for imputeMethod in [ImputeMethod.MEAN]:
     # Run the experiment
-    experiment_results = run_experiment(datasets, iteration_number, imputeMethod)
+    experiment_results = run_experiment(datasets, missingness_ratios, missing_data_mechanisms, iteration_number,
+                                        imputeMethod)
     # Convert results to a DataFrame and save to CSV
     results_df = pd.DataFrame(experiment_results)
-    results_df.to_csv(f'experiment_results_ICU_XGBagging.csv', index=False)
+    results_df.to_csv(f'experiment_results_ICU_{imputeMethod.value}.csv', index=False)

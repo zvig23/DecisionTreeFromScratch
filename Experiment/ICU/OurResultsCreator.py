@@ -5,11 +5,11 @@ import pandas as pd
 from sklearn.ensemble import VotingClassifier
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 
-from Datasets import load_datasets_bank
+from Datasets import load_datasets_bank, load_ICU
 from Missingness import produce_NA
 from common.imputeMethods import ImputeMethod
 from SklearnBasedModel.RandomForestClassifier.BaggingRandomForestClassifier import BaggingRandomForestClassifier
@@ -49,28 +49,43 @@ def run_experiment(datasets, num_iterations, imputeMethod):
             forest.fit(X_train, y_train)
 
             # Make predictions
-            y_pred = forest.predict_proba(X_test)[:, 1]
+            y_pred_proba = forest.predict_proba(X_test)[:, 1]
+            y_pred = forest.predict(X_test)
 
             # Calculate ROC-AUC score
-            roc_auc = roc_auc_score(y_test, y_pred)
-
+            roc_auc = roc_auc_score(y_test, y_pred_proba)
+            tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
+            precision = precision_score(y_test, y_pred)
+            recall = recall_score(y_test, y_pred)
+            sensitivity = recall
+            specificity = tn / (tn + fp)
+            ppv = precision
+            npv = tn / (tn + fn)
+            f1 = f1_score(y_test, y_pred)
             # Store results
             result_entry = {
                 'Dataset': dataset_name,
                 'Iteration': iteration + 1,
                 'ROC-AUC Score': roc_auc,
-                'Impute': imputeMethod.value
+                'Impute': imputeMethod.value,
+                "precision": precision,
+                "recall": recall,
+                "sensitivity": sensitivity,
+                "specificity": specificity,
+                "ppv": ppv,
+                "npv": npv,
+                "f1": f1,
             }
 
             results.append(result_entry)
-            print(f' {current_experiment_index}')
+            print( f' {current_experiment_index} / {10}')
             print(roc_auc)
             current_experiment_index += 1
     return results
 
 
 # Define a placeholder dataset for demonstration purposes
-datasets = load_datasets_bank()
+datasets = load_ICU()
 
 # Define missingness ratios and mechanisms
 missingness_ratios = [0]

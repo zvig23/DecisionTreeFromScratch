@@ -25,6 +25,6 @@ def combine_csv_files(folder_path, output_file):
     print(f'Combined CSV saved to {output_file}')
 
 # Example usage
-folder_path = 'C:/Users/dvirl/PycharmProjects/new_copy/DecisionTreeFromScratch/Experiment/results/general'  # Replace with your folder path
-output_file = 'combined_results_full_preformence.csv'
+folder_path = 'C:/Users/dvirl/PycharmProjects/new_copy/DecisionTreeFromScratch/Experiment/results/ICU'  # Replace with your folder path
+output_file = 'ICU_combined_results_full_preformence4.csv'
 combine_csv_files(folder_path, output_file)

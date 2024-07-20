@@ -44,7 +44,7 @@ class PreformanceMetric(Enum):
 
 
 dvir_results = pd.read_csv(
-    'ICU_combined_results_full_preformence2.csv'
+    'ICU_combined_results_full_preformence4.csv'
 )
 
 
@@ -52,7 +52,7 @@ dvir_results = pd.read_csv(
 def create_line_for_performance_metric(preformanceMetric: PreformanceMetric):
     # Calculate the mean AUC for each group
 
-    grouped = dvir_results.groupby('Impute')['ROC-AUC Score'].agg(['mean', 'std']).reset_index()
+    grouped = dvir_results.groupby('Impute')[preformanceMetric.value].agg(['mean', 'std']).reset_index()
 
     # Create the bar plot
     plt.figure(figsize=(10, 6))
@@ -63,10 +63,12 @@ def create_line_for_performance_metric(preformanceMetric: PreformanceMetric):
         height = bar.get_height()
         plt.text(bar.get_x() + bar.get_width() / 2, height, f'{mean:.3f}\n±{std:.3f}', ha='center', va='bottom')
 
-    plt.xlabel('Imputation Method')
-    plt.ylabel('Mean ROC-AUC Score')
-    plt.title('Mean ROC-AUC Score by Imputation Method with Standard Deviation')
+    plt.xlabel(f'Imputation Method')
+    plt.ylabel(f'Mean {preformanceMetric.value} Score')
+    plt.title(f'Mean {preformanceMetric.value} Score by Imputation Method with Standard Deviation')
+    plt.savefig(f'plots/Mean {preformanceMetric.value} Score.png')
     plt.show()
 
-for preformanceMetric in [PreformanceMetric.ROCAUCScore]:
+
+for preformanceMetric in PreformanceMetric:
     create_line_for_performance_metric(preformanceMetric)

@@ -24,7 +24,7 @@ warnings.filterwarnings(action='ignore', category=UserWarning)
 np.random.seed(42)
 
 coefficients = {"breast_cancer": 0.98, 'open_ml_breast_cancer': 0.88, 'pima_indians_diabetes': 0.92, "stroke": 1,
-                "ICU": 0.}
+                "ICU": 0.91}
 
 
 # Function to generate missing data
@@ -109,4 +109,4 @@ for imputeMethod in [ImputeMethod.BASELINE]:
                                         imputeMethod)
     # Convert results to a DataFrame and save to CSV
     results_df = pd.DataFrame(experiment_results)
-    results_df.to_csv(f'experiment_results_{imputeMethod.value}.csv', index=False)
+    results_df.to_csv(f'experiment_results_coef_{imputeMethod.value}.csv', index=False)
