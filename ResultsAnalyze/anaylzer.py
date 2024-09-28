@@ -21,8 +21,8 @@ class Datasets(Enum):
 
 
 class Mechas(Enum):
-    MAR = "MAR"
     MCAR = "MCAR"
+    MAR = "MAR"
     MNAR = "MNAR"
 
 
@@ -44,6 +44,7 @@ std_auc = grouped_data['ROC-AUC Score'].std()
 fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(15, 15))
 
 axs = axes.flatten()
+
 axs_index = 0
 
 colors_to_impute = {
@@ -71,10 +72,15 @@ for line, dataset in enumerate(Datasets):
                                         auc_per_missingness[column].values - std_per_missingness[column].values,
                                         color=colors_to_impute[column],
                                         alpha=0.075)
+
         # Set subplot title
         axs[axs_index].set_title(f"{dataset.value} | {mecha.value}")
-        axs[axs_index].legend()
+        axs[axs_index].set_xlabel("Missingness rate")
+        axs[axs_index].set_ylabel("ROC-AUC Score")
+        if axs_index == 8:
+            axs[axs_index].legend()
         axs_index += 1
+
         # Adjust layout
 plt.tight_layout()
 

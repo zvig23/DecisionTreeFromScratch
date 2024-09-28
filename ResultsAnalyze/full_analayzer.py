@@ -33,7 +33,6 @@ class PMisss(Enum):
 
 
 class PreformanceMetric(Enum):
-    ROCAUCScore = 'ROC-AUC Score'
     precision = "precision"
     recall = "recall"
     sensitivity = "sensitivity"
@@ -89,6 +88,8 @@ def create_line_for_performance_metric(preformanceMetric: PreformanceMetric):
                                             alpha=0.075)
             # Set subplot title
             axs[axs_index].set_title(f"{dataset.value} | {mecha.value}")
+            axs[axs_index].set_xlabel("Missingness rate")
+            axs[axs_index].set_ylabel(f"{preformanceMetric.value} Score")
             if line == len(Datasets) - 1 and i == len(Mechas) - 1:
                 axs[axs_index].legend()
             axs_index += 1
@@ -96,11 +97,11 @@ def create_line_for_performance_metric(preformanceMetric: PreformanceMetric):
     plt.tight_layout()
 
     # Save the single plot with 9 subplots
-    plt.savefig(f'CombinedPlots/combined_plots_{preformanceMetric.value}.png')
+    # plt.savefig(f'CombinedPlots/combined_plots_{preformanceMetric.value}.png')
 
     # Show the plot
     plt.show()
 
 
-for preformanceMetric in [PreformanceMetric.ROCAUCScore]:
+for preformanceMetric in PreformanceMetric:
     create_line_for_performance_metric(preformanceMetric)
