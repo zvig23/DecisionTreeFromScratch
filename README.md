@@ -15,7 +15,7 @@ The method was tested using simulated and real-world missingness scenarios, and 
 
 ### Prerequisites
 
-Make sure you have Python 3.7+ installed, and install the required dependencies by running:
+Make sure you have Python 3.9+ installed, and install the required dependencies by running:
 
 ### Dependencies
 
